@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -54,7 +53,7 @@ namespace PetDesk.Challenge.Services.ThirdParty
                             taskResult.Result.ForEach(f => result.Add(f))))
                 .ToArray();
             await Task.WhenAll(monthTasks);
-            return result.OrderByDescending(x => x.Month);
+            return result;
         }
 
         private async Task<IEnumerable<Flight>> GetFlights(int month)
@@ -62,12 +61,7 @@ namespace PetDesk.Challenge.Services.ThirdParty
             var response = await _httpClient.GetStringAsync($"flights/{month}");
             var parser = new CsvParser<Flight>(new CsvParserOptions(true, ','), new CsvFlightMapping());
             var validator = new FlightValidator();
-            var result = parser.ReadFromString(new CsvReaderOptions(new[] {Environment.NewLine}), response).ToList();
-            var invalid = result.Where(x => !x.IsValid).ToList();
-            foreach (var csvMappingResult in invalid)
-                Debug.WriteLine(
-                    $"error: {csvMappingResult.Error.Value}, unmapped: {csvMappingResult.Error.UnmappedRow}");
-            return result
+            return parser.ReadFromString(new CsvReaderOptions(new[] {Environment.NewLine}), response)
                 .Where(x => x.IsValid)
                 .Select(x => new {x.Result, ValidationResult = validator.Validate(x.Result)})
                 .Where(x => x.ValidationResult.IsValid)
