@@ -34,11 +34,10 @@ namespace PetDesk.Challenge.Services.Reports
 
             return await Task.FromResult(distributionByState.Keys.Select(x => new Distribution(x)
                 {
-                    InboundFlights = distributionByState[x].InboundFlights,
-                    OutboundFlights = distributionByState[x].OutboundFlights
+                    FlightCounter = distributionByState[x]
                 })
-                .OrderByDescending(x => x.OutboundFlights)
-                .ThenByDescending(x => x.InboundFlights));
+                .OrderByDescending(x => x.FlightCounter.OutboundFlights)
+                .ThenByDescending(x => x.FlightCounter.InboundFlights));
         }
     }
 }

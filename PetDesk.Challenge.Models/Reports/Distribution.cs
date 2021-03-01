@@ -8,11 +8,10 @@
         }
 
         public string State { get; set; }
-        public int InboundFlights { get; set; }
-        public int OutboundFlights { get; set; }
+        public FlightCounter FlightCounter { get; set; }
     }
 
-    public class FlightCounter
+    public struct FlightCounter
     {
         public int InboundFlights { get; set; }
         public int OutboundFlights { get; set; }
