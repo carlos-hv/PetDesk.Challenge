@@ -3,19 +3,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PetDesk.Challenge.Models.Reports;
 using PetDesk.Challenge.Services;
-using PetDesk.Challenge.Services.ThirdParty;
 
 namespace PetDesk.Challenge.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ReportsController : ControllerBase
     {
         private readonly ReportingService _reportingService;
 
         public ReportsController(ReportingService reportingService)
         {
-            _reportingService  = reportingService;
+            _reportingService = reportingService;
         }
 
         [HttpGet]
@@ -37,6 +36,13 @@ namespace PetDesk.Challenge.WebApi.Controllers
         public async Task<IEnumerable<Performance>> Performance()
         {
             return await _reportingService.GetPerformanceReportAsync();
+        }
+
+        [HttpGet]
+        [Route("recommendations")]
+        public async Task<IEnumerable<Recommendation>> Recommendations([FromQuery] int number = 3)
+        {
+            return await _reportingService.GetRecommendationReportAsync(number);
         }
     }
 }

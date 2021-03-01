@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using PetDesk.Challenge.Models.DTO;
 using PetDesk.Challenge.Services.Caching.Providers;
@@ -40,11 +39,11 @@ namespace PetDesk.Challenge.Services.Caching
                         await _flightDataService.GetAllFlights();
 
             if (!await _redis.ExistsAsync("airlines"))
-                await _redis.SetAsync("airlines", Airlines);
+                await _redis.AddAsync("airlines", Airlines);
             if (!await _redis.ExistsAsync("airports"))
-                await _redis.SetAsync("airports", Airports);
+                await _redis.AddAsync("airports", Airports);
             if (!await _redis.ExistsAsync("flights"))
-                await _redis.SetAsync("flights", Flights);
+                await _redis.AddAsync("flights", Flights);
 
             IsInitialized = true;
         }

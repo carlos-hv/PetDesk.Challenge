@@ -24,5 +24,10 @@ namespace PetDesk.Challenge.Services
         {
             return await PerformanceReport.GetAsync(_cache);
         }
+
+        public async Task<IEnumerable<Recommendation>> GetRecommendationReportAsync(int number)
+        {
+            return await RecommendationReport.Get(_cache, number);
+        }
     }
 }

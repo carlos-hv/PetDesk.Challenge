@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
 using FluentValidation;
 using PetDesk.Challenge.Models.DTO;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.TypeConverter;
 
 namespace PetDesk.Challenge.Services.Mapping
 {
@@ -15,9 +16,9 @@ namespace PetDesk.Challenge.Services.Mapping
             MapProperty(5, x => x.FlightNumber);
             MapProperty(7, x => x.OriginAirport);
             MapProperty(8, x => x.DestinationAirport);
-            MapProperty(22, x => x.ArrivalDelay);
-            MapProperty(23, x => x.Diverted);
-            MapProperty(24, x => x.Cancelled);
+            MapProperty(11, x => x.DepartureDelay, new CustomNumberConverter());
+            MapProperty(22, x => x.ArrivalDelay, new CustomNumberConverter());
+            MapProperty(24, x => x.Cancelled, new BoolConverter("True", "False", StringComparison.Ordinal));
         }
     }
 
@@ -34,6 +35,20 @@ namespace PetDesk.Challenge.Services.Mapping
                 .NotNull()
                 .NotEmpty()
                 .Length(3);
+        }
+    }
+
+    internal class CustomNumberConverter : BaseConverter<int>
+    {
+        public override bool TryConvert(string value, out int result)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                result = 0;
+                return true;
+            }
+
+            return int.TryParse(value, out result);
         }
     }
 }

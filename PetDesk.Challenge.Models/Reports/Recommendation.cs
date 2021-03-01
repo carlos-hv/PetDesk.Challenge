@@ -4,7 +4,8 @@
     {
         public string Airport { get; set; }
         public string AirportCode { get; set; }
-        public double CancelAverage { get; set; }
-        public double OnTimeAverage { get; set; }
+        public int TotalOutboutFlights { get; set; }
+        public double CancelledFlights { get; set; }
+        public double DepartureDelayAverage { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace PetDesk.Challenge.WebApi.Filters
                 context.Result = new ConflictObjectResult("API cache is initializing, please wait");
         }
 
-        public void OnActionExecuted(ActionExecutedContext context) { }
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+        }
     }
 }

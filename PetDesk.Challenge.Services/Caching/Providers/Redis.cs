@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace PetDesk.Challenge.Services.Caching.Providers
@@ -15,17 +14,17 @@ namespace PetDesk.Challenge.Services.Caching.Providers
 
         public async Task<T> GetAsync<T>(string key) where T : class
         {
-            return await _cacheClient.Db0.GetAsync<T>(key);
+            return await _cacheClient.GetDbFromConfiguration().GetAsync<T>(key);
         }
 
-        public async Task SetAsync<T>(string key, T value) where T : class
+        public async Task AddAsync<T>(string key, T value) where T : class
         {
-            await _cacheClient.Db0.AddAsync(key, value, DateTimeOffset.MaxValue);
+            await _cacheClient.GetDbFromConfiguration().AddAsync(key, value);
         }
 
         public async Task<bool> ExistsAsync(string key)
         {
-            return await _cacheClient.Db0.ExistsAsync(key);
+            return await _cacheClient.GetDbFromConfiguration().ExistsAsync(key);
         }
     }
 }

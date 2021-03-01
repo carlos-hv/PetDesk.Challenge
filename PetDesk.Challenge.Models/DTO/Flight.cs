@@ -8,8 +8,8 @@
         public string Airline { get; set; }
         public string OriginAirport { get; set; }
         public string DestinationAirport { get; set; }
+        public int DepartureDelay { get; set; }
         public int ArrivalDelay { get; set; }
-        public bool Diverted { get; set; }
         public bool Cancelled { get; set; }
     }
 }
